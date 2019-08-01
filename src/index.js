@@ -8,7 +8,7 @@ const cors = require('cors')
 const User = require('./models/user')
 const Task = require('./models/task')
  
-mongoose.connect('mongodb+srv://rochafi9:Rochafiatlas99@rochaficluster-zvlca.mongodb.net/rochafi9?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://aritno9:<aritno123>@aritno9-x1t3p.mongodb.net/mongoosearitno?retryWrites=true&w=majority',{ 
     // Parser string URL
     useNewUrlParser: true,
 
