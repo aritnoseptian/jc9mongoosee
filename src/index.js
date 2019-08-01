@@ -154,16 +154,20 @@ app.get('/users/:id/avatar', async (req, res) => {
 // UPDATE PROFILE BY ID
 // Name, email, age, password
 app.patch('/users/:id', upload.single('ravatar') ,(req, res) => {
-    var {name, email, age, password} = req.body
+    let arrayBody = Object.keys(req.body)
+    // req.body {name, email, age, password}
+    // arrayBody [name, email, age, password]
+    arrayBody.forEach(key => {
+        if(!req.body[key]){
+            delete req.body[key]
+        }
+    })
+    // req.body {name, email, age}
+    // arrayBody [name, email, age]
+    arrayBody = Object.keys(req.body)
 
     const data_id = req.params.id
-    const data_name = name
-    const data_email = email
-    const data_age = age
-    const data_password = password
     
-
-
     User.findById(data_id)
         .then(user => {
             // user : {_id, name, password, email, age}
@@ -172,10 +176,11 @@ app.patch('/users/:id', upload.single('ravatar') ,(req, res) => {
                 return res.send("User tidak di temukan")
             }
 
-            user.name = data_name
-            user.email = data_email
-            user.password = data_password
-            user.age = data_age
+            // update user
+            // arrayBody [name, email, age]
+            arrayBody.forEach(key => {
+                user[key] = req.body[key]
+            })
 
             sharp(req.file.buffer).resize({width: 250}).png().toBuffer()
             .then(buffer => {
@@ -193,6 +198,7 @@ app.patch('/users/:id', upload.single('ravatar') ,(req, res) => {
             
         })
 })
+
 
 // DELETE USER BY ID
 app.delete('/users/:id', (req, res) => {
